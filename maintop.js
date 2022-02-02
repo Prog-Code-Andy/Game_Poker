@@ -1,73 +1,43 @@
-function Card(rankCard){
-    this.arrGetCard = rankCard;
-    console.log(rankCard);
-    this.rang = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"];
-    this.suit = ["S","C","D","H"];
- 
-    //Метод генерирования карты
-    this.GenerCard = function(){
-        var newCard = this.rang[rankCard%13] + "" + this.suit[~~(rankCard/13)];
-        return newCard;
-     };
+function Card(suitCard, rangCard){
+    this.suit = suitCard;
+    this.rang = rangCard;
+
      //Метод печати для теста
      this.strTestPrint = function(){
-         if(!this.arrGetCard) return false;
-         var printInLine = "";
-         for (let i = 0; i <  this.arrGetCard.length; i++) {
-            var newCard = this.rang[this.arrGetCard[i]%13] + "" + this.suit[~~(this.arrGetCard[i]/13)];
-            printInLine += newCard + " ";
-         }
-         console.log(printInLine);
+         console.log(this.suit + "" + this.rang);
      }
 
+     this.getCardInDesk = function(){
+         return this.suit + "" + this.rang;
+     }
 };
 
 
+
+
 function Desk(large = 52){
-    this.size;
-    this.arrDesk = new Array(large);
-    this.emptySize = 0;
-    //наполнение колоды
-    this.generDesk = function(){
-         for (let i = 0; i < this.arrDesk.length; i++) {
-            this.arrDesk[i] = 0;
-         }
-            this.size = this.arrDesk.length;
-            console.log(this.arrDesk);
-    };
+    this.large = large;
+    this.arrDesk = new Array();
+
     //проверка размера колоды
     this.checkLengthDesk = function(){
-        if(this.size === large) return true;
+        if(this.large) return this.large;
         return false;
     };
 
-    this.getCard = function(numbCard){
-        var num = numbCard;
-        var numbIndCard = [];
-        //отправляет в function Card(rankCard) - полученый индекс массива
-            this.createCard = function(){
-                for (let i = 0; i < num; i++) {
-                    var numCard = ~~(Math.random()*large);
-                     if(this.arrDesk[numCard] === 1 && this.emptySize <= this.arrDesk.length){
-                         do{
-                             numCard = ~~(Math.random()*large);
-                         }while(this.arrDesk[numCard] != 0)
-                         this.emptySize++;
-                         this.arrDesk[numCard] = 1;
-                         numbIndCard.push(numCard);
-                         console.log("DO");
-                     }else{
-                        this.emptySize++;
-                        this.arrDesk[numCard] = 1;
-                        numbIndCard.push(numCard);
-                        console.log("TODO");
-                     }
+     //наполнение колоды
+     this.generDesk = function(card){
+        this.arrDesk.push(card);
+    };
 
-                 }
-                 console.log(this.arrDesk);
-                 return numbIndCard;
-            }
-            if(!num) return false;
+    //Сортировать колоду -- разобрать
+    this.sortDesk = function(){
+        this.arrDesk.sort(() => Math.random() - 0.5);
+    }
+
+    //Распечатать массив
+    this.printArr = function(){
+        console.log(this.arrDesk);
     }
 };
 
@@ -75,20 +45,24 @@ function Desk(large = 52){
 
 
 
-const desk = new Desk();
-//сгенирироввать колоду
-desk.generDesk();
-//Проверка длины колоды
-console.log(desk.checkLengthDesk());
-//раздать кол-во карт
-desk.getCard(5);
-//из метода getCard передает кол-во карт для печати и генерации
-/* let getQuantityCard = desk.createCard(); */
+ //Метод генерирования карты
+ function getGenerateCard(){
+    let suit = ["S","C","D","H"];
+    let rang = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"];
+    let desk = new Desk(52);
+    let card;
+    for (let i = 0; i < desk.checkLengthDesk(); i++) {
+        card = new Card(suit[~~(i/13)], rang[~~(i%13)]);
+        card.strTestPrint();
+        desk.generDesk(card.getCardInDesk());
+    }
+    desk.printArr();
+    desk.sortDesk();
+    desk.printArr();
 
-const card = new Card(desk.createCard());
-card.strTestPrint();
+}
 
-
+getGenerateCard();
 /* U+2666 буба D*/
 /* U+2665 сердце H*/
 /* U+2660 пика S*/
