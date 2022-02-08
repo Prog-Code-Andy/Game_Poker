@@ -57,7 +57,8 @@ function Desk(large = 52) {
         return this.tempQuanArr;
     } */
     
-    function getResultDesk(i = 0){
+    function getResultDesk(i = 0) {
+        console.log(i)
         let QuanArr = [];
         QuanArr.push(Math.floor(_resDesk[top + i]/13));
         QuanArr.push(_resDesk[top + i]%13); 
@@ -80,6 +81,15 @@ function Desk(large = 52) {
             cardIssued.push(getResultDesk(-i));
         }
          return cardIssued;
+    }
+
+    this.chackBalance = function () {
+        console.log(this.desk);
+        let cardBalance = new Array();
+        for (let i = top; i < this.desk.length; i++) {
+            cardBalance.push(getResultDesk(i));
+        }
+        return cardBalance;
     }
     
     this.deskPrint = function (deskCard) {
@@ -107,5 +117,6 @@ let prnt = desk.getCardSec(5);
 desk.deskPrint(prnt);
 let issuedCard = desk.checkExtradite();
 desk.deskPrint(issuedCard);
+console.log(desk.chackBalance());
 card.cardPrint();
 desk.checkExtradite();
