@@ -17,15 +17,18 @@ function Desk(large = 52) {
     let top = 0;
     let _resDesk = this.desk;
 
+    //Заполнение колоды
     for (let i = 0; i < this.size; i++) {
         this.desk[i] = i;
     }
-
+    //Печать всего массива карт
     this.checkDesk = function () {
+        if (!this.desk.length || !this.size) return false;
         console.log(this.desk);
     }
-
-    this.getSort = function(){
+    //Сортировка массива
+    this.getSort = function () {
+        if (!this.desk.length || !this.size) return false;
         this.desk = this.desk.sort(() => Math.random() - 0.5);
         return this.desk;
     }
@@ -57,14 +60,14 @@ function Desk(large = 52) {
         return this.tempQuanArr;
     } */
     
+    //Функция для обработки массива
     function getResultDesk(i = 0) {
-        console.log(i)
         let QuanArr = [];
         QuanArr.push(Math.floor(_resDesk[top + i]/13));
         QuanArr.push(_resDesk[top + i]%13); 
         return QuanArr;
     }
-
+    //Раздать карты
     this.getCardSec = function(quantity){
         if(top >= this.size || !quantity) return false;
         let tempDeskArr = new Array();
@@ -74,25 +77,29 @@ function Desk(large = 52) {
         }
         return tempDeskArr;
     }
-
-    this.checkExtradite = function(){
+    //Проверка выданых карт
+    this.checkExtradite = function () {
+        if (!this.desk.length || !this.size) return false;
         let cardIssued = new Array();
         for (let i = top; 0 < i; i--) {
             cardIssued.push(getResultDesk(-i));
         }
          return cardIssued;
     }
-
+    // Проверка остатка карт в колоде
     this.chackBalance = function () {
-        console.log(this.desk);
+        if (!this.desk.length || !this.size) return false;
         let cardBalance = new Array();
+        let tempCount = 0;
         for (let i = top; i < this.desk.length; i++) {
-            cardBalance.push(getResultDesk(i));
+            cardBalance.push(getResultDesk(tempCount));
+            tempCount++;
         }
         return cardBalance;
     }
     
     this.deskPrint = function (deskCard) {
+        if (!deskCard.length || !this.size) return false;
         let suit = ["S","C","D","H"];
         let rang = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
         if (deskCard) {
@@ -113,10 +120,17 @@ let desk = new Desk();
 let card = new Card();
 desk.checkDesk();
 console.log(desk.getSort());
+//Выдать 5
 let prnt = desk.getCardSec(5);
+//Распечатай 5
 desk.deskPrint(prnt);
-let issuedCard = desk.checkExtradite();
-desk.deskPrint(issuedCard);
-console.log(desk.chackBalance());
+//Выдать еще 10
+prnt = desk.getCardSec(10);
+//Распечатай 10
+desk.deskPrint(prnt);
+//Распечатай выданые карты ВСЕ
+desk.deskPrint(desk.checkExtradite());
+//распечатать остаток в колоде
+desk.deskPrint(desk.chackBalance());
+//Для печати карты
 card.cardPrint();
-desk.checkExtradite();
