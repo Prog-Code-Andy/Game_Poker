@@ -2,61 +2,39 @@ function Card(suitCard, rangCard){
     this.suitCard = suitCard;
     this.rangCard = rangCard;
 
-    this.cardPrint = function () {
-        console.log(this.rangCard + " " + this.suitCard);
+    let suit = ["S","C","D","H"];
+    let rang = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
+
+    this.toStr = function () {
+        return rang[this.rangCard] + suit[this.suitCard];
     }
 };
 
+
+var c1 = new Card(2, 3);
+var c2 = new Card(0, 11);
+var c3 = new Card(2, 7);
+
+console.log(c1.toStr()+", "+c2.toStr()+", "+c3.toStr());
 
 
 
 function Desk(large = 52) {
     this.size = large;
-    this.desk = new Array(this.size);
-    this.tempDeskCard;
+    let desk = new Array(this.size);
     let top = 0;
-    let _resDesk = this.desk;
 
+    //Полнение колоды
     for (let i = 0; i < this.size; i++) {
         this.desk[i] = i;
     }
 
-    this.checkDesk = function () {
-        console.log(this.desk);
-    }
-
-    this.getSort = function(){
+    //Перемешивание массива
+    this.shuffle = function(){
         this.desk = this.desk.sort(() => Math.random() - 0.5);
         return this.desk;
     }
 
-    /* this.getSort = function(){
-        for (let i = 0; i < this.desk.length; i++) {
-            let rand = Math.floor(Math.random() * (i));
-            console.log(rand);
-            this.desk[rand] = this.desk[i];
-        }
-        return this.desk;
-    } */
-
-    /* this.getCard = function(quantity){
-        if(!quantity || quantity > this.size) return;
-        let numbQua = quantity;
-        this.tempQuanArr = new Array();
-        do{
-            let cardRand = Math.floor(Math.random()*this.size);
-            let tepmCardArr = [];
-            if(this.desk[cardRand] != "*"){
-                this.desk[cardRand] = "*";
-                tepmCardArr.push(Math.floor(cardRand/13));
-                tepmCardArr.push(cardRand%13);
-                this.tempQuanArr.push(tepmCardArr);
-                numbQua--;
-            }
-        }while(numbQua >= 1)
-        return this.tempQuanArr;
-    } */
-    
     function getResultDesk(i = 0){
         let QuanArr = [];
         QuanArr.push(Math.floor(_resDesk[top + i]/13));
@@ -83,8 +61,7 @@ function Desk(large = 52) {
     }
     
     this.deskPrint = function (deskCard) {
-        let suit = ["S","C","D","H"];
-        let rang = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
+        
         if (deskCard) {
             let printInf = "";
             for (let i = 0; i < deskCard.length; i++) {
