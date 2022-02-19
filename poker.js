@@ -5,17 +5,17 @@ function Card(suitCard, rangCard){
     let suit = ["S","C","D","H"];
     let rang = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
 
-    this.toStr = function () {
+    this.toString = function () {
         return rang[this.rangCard] + suit[this.suitCard];
-    }
+    };
 };
 
 
-var c1 = new Card(2, 3);
+/* var c1 = new Card(2, 3);
 var c2 = new Card(0, 11);
 var c3 = new Card(2, 7);
 
-console.log(c1.toStr()+", "+c2.toStr()+", "+c3.toStr());
+console.log(c1 + ", " + c2 + ", " + c3); */
 
 
 
@@ -26,63 +26,64 @@ function Desk(large = 52) {
 
     //Полнение колоды
     for (let i = 0; i < this.size; i++) {
-        this.desk[i] = i;
-    }
+        desk[i] = i;
+    };
 
     //Перемешивание массива
     this.shuffle = function(){
         this.desk = this.desk.sort(() => Math.random() - 0.5);
         return this.desk;
-    }
+    };
 
-    function getResultDesk(i = 0){
-        let QuanArr = [];
-        QuanArr.push(Math.floor(_resDesk[top + i]/13));
-        QuanArr.push(_resDesk[top + i]%13); 
-        return QuanArr;
-    }
-
-    this.getCardSec = function(quantity){
-        if(top >= this.size || !quantity) return false;
+    //Раздать карты
+    this.getCards = function(quantity){
         let tempDeskArr = new Array();
-        for (let i = 0; i < quantity; i++) {
-            tempDeskArr.push(getResultDesk());
-            top++;
+        for (let i = 0; i < quantity && top < this.size; i++) {
+            let c = desk[top++];
+            tempDeskArr.push(new Card(~~(c/13), c%13));
         }
         return tempDeskArr;
-    }
+    };
 
-    this.checkExtradite = function(){
-        let cardIssued = new Array();
-        for (let i = top; 0 < i; i--) {
-            cardIssued.push(getResultDesk(-i));
-        }
-         return cardIssued;
-    }
-    
-    this.deskPrint = function (deskCard) {
-        
-        if (deskCard) {
-            let printInf = "";
-            for (let i = 0; i < deskCard.length; i++) {
-                for (let j = 0; j < 1; j++) {
-                    printInf += rang[deskCard[i][j+1]] + "" + suit[deskCard[i][j]] + " ";
-                }
+    this.getCardsShadows = function(given = true){
+        let tempDeskArr = new Array();
+        if(given){
+            for (let i = top-1; i >= 0; i--) {
+                tempDeskArr.push(new Card(~~(desk[i]/13), desk[i]%13));
             }
-            console.log(printInf);
         }
+        else
+        {
+            for (let i = top; i < desk.length; i++) {
+                tempDeskArr.push(new Card(~~(desk[i]/13), desk[i]%13));
+            }
+        }
+        return tempDeskArr;
+    };
+
+    this.reset = function (){
+        top = 0;
+        this.shuffle();
     }
 
 };
 
 
+function printHand(set)
+{
+    var res = "";
+    for (let i = 0; i < set.length; i++) {
+        res += set[i] + " ";
+    }
+    console.log(res);
+}
+
 let desk = new Desk();
-let card = new Card();
-desk.checkDesk();
-console.log(desk.getSort());
-let prnt = desk.getCardSec(5);
-desk.deskPrint(prnt);
-let issuedCard = desk.checkExtradite();
-desk.deskPrint(issuedCard);
-card.cardPrint();
-desk.checkExtradite();
+let hand1 = desk.getCards(7);
+let hand2 = desk.getCards(7);
+console.log(hand1[0]);
+
+printHand(hand1);
+printHand(hand2);
+
+printHand(desk.getCardsShadows(false));
