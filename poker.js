@@ -10,12 +10,26 @@ function Card(suitCard, rangCard){
     };
 };
 
+function HandRanking(hand){
+    this.extraditeCard = hand;
 
-/* var c1 = new Card(2, 3);
-var c2 = new Card(0, 11);
-var c3 = new Card(2, 7);
+    this.sortExtraditeCard = function(){
+        return this.extraditeCard.sort((a,b) => a.rangCard - b.rangCard);
+    }
 
-console.log(c1 + ", " + c2 + ", " + c3); */
+    this.checkOnWinExtraditeCard = function(){
+        let sumRang = 0;
+        for (let i = 0; i < this.extraditeCard.length; i++) {
+            sumRang += this.extraditeCard[i].rangCard;
+        }
+        /* if(sumRang === 50 && ) */
+        console.log(sumRang);
+        this.extraditeCard
+    }
+    console.log(this.extraditeCard);
+    /* poker */
+};
+
 
 
 
@@ -31,8 +45,7 @@ function Desk(large = 52) {
 
     //Перемешивание массива
     this.shuffle = function(){
-        this.desk = this.desk.sort(() => Math.random() - 0.5);
-        return this.desk;
+        return desk.sort(() => Math.random() - 0.5);
     };
 
     //Раздать карты
@@ -79,11 +92,17 @@ function printHand(set)
 }
 
 let desk = new Desk();
+desk.shuffle();
 let hand1 = desk.getCards(7);
 let hand2 = desk.getCards(7);
-console.log(hand1[0]);
 
 printHand(hand1);
 printHand(hand2);
 
-printHand(desk.getCardsShadows(false));
+let test = new HandRanking(hand1);
+hand1 = test.sortExtraditeCard();
+printHand(hand1);
+test.checkOnWinExtraditeCard();
+
+
+printHand(desk.getCardsShadows());
